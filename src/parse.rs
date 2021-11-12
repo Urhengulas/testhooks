@@ -1,9 +1,26 @@
 use proc_macro2::TokenStream as TokenStream2;
+use proc_macro_error::{abort, abort_call_site};
+use syn::Item;
 
 type Ast = syn::ItemMod;
 
 pub fn parse(args: TokenStream2, item: TokenStream2) -> Ast {
-    todo!()
+    if !args.is_empty() {
+        abort_call_site!("this attribute takes no arguments"; help = "use `#[testhooks]`")
+    }
+
+    match syn::parse2::<Item>(item) {
+        Ok(Item::Mod(m)) => m,
+        Ok(item) => {
+            abort!(
+                item,
+                "item is not a module";
+                help = "`#[testhooks]` can only be used on modules"
+            )
+        }
+        // TODO: why is it unreachable?
+        Err(_) => unreachable!(),
+    }
 }
 
 #[cfg(test)]

@@ -2,7 +2,7 @@ use proc_macro2::TokenStream as TokenStream2;
 use proc_macro_error::{abort, abort_call_site};
 use syn::Item;
 
-type Ast = syn::ItemMod;
+pub type Ast = syn::ItemMod;
 
 pub fn parse(args: TokenStream2, item: TokenStream2) -> Ast {
     if !args.is_empty() {

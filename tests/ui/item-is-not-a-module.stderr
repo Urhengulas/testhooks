@@ -1,0 +1,8 @@
+error: item is not a module
+
+  = help: `#[testhooks]` can only be used on modules
+
+ --> $DIR/item-is-not-a-module.rs:4:1
+  |
+4 | struct S;
+  | ^^^^^^^^^

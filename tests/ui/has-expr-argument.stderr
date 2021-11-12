@@ -1,0 +1,10 @@
+error: this attribute takes no arguments
+
+  = help: use `#[testhooks]`
+
+ --> $DIR/has-expr-argument.rs:3:1
+  |
+3 | #[testhooks(true)]
+  | ^^^^^^^^^^^^^^^^^^
+  |
+  = note: this error originates in the attribute macro `testhooks` (in Nightly builds, run with -Z macro-backtrace for more info)

@@ -2,6 +2,12 @@ use syn::{Item, ItemFn, ItemMod};
 
 use crate::Ast;
 
+pub struct Model {
+    pub module: ItemMod,
+    pub tests: Vec<ItemFn>,
+    pub untouched_tokens: Vec<Item>,
+}
+
 pub fn analyze(ast: Ast) -> Model {
     let mut module = ast;
 
@@ -9,6 +15,7 @@ pub fn analyze(ast: Ast) -> Model {
         // TODO: proc-macro-error
         todo!()
     });
+    module.content = Some((brace, vec![]));
 
     // Die Guten ins Töpfchen, die Schlechten ins Kröpfchen
     let mut tests = vec![];
@@ -20,15 +27,11 @@ pub fn analyze(ast: Ast) -> Model {
         }
     }
 
-    module.content = Some((brace, untouched_tokens));
-
-    Model { module, tests }
-}
-
-#[derive(Debug)]
-pub struct Model {
-    module: ItemMod,
-    tests: Vec<ItemFn>,
+    Model {
+        module,
+        tests,
+        untouched_tokens,
+    }
 }
 
 trait IsTest {

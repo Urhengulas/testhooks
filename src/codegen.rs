@@ -26,3 +26,28 @@ pub fn codegen(ir: Ir) -> Rust {
 
     module.into_token_stream()
 }
+
+#[cfg(test)]
+mod tests {
+    use syn::{parse_quote, ItemMod};
+
+    use super::*;
+
+    #[test]
+    fn output_is_module_item() {
+        let ir = Ir {
+            global: parse_quote!(
+                static A: () = ();
+            ),
+            module: parse_quote!(
+                mod tests {}
+            ),
+            tests: vec![parse_quote!(
+                fn test_1() {}
+            )],
+        };
+        let rust = codegen(ir);
+
+        assert!(syn::parse2::<ItemMod>(rust).is_ok());
+    }
+}

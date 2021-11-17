@@ -38,3 +38,30 @@ fn global() -> ItemStatic {
         static GLOBAL: () = ();
     )
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn preserve_number_of_tests() {
+        let mut model = Model::stub();
+        model.tests.push(parse_quote!(
+            fn test_1() {}
+        ));
+
+        let ir = lower(model);
+        assert_eq!(ir.tests.len(), 1);
+    }
+
+    impl Model {
+        fn stub() -> Self {
+            Self {
+                module: parse_quote!(
+                    mod tests {}
+                ),
+                tests: vec![],
+            }
+        }
+    }
+}
